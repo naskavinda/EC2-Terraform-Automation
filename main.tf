@@ -38,10 +38,20 @@ resource "aws_security_group" "example" {
   }
 }
 
+resource "aws_subnet" "example" {
+  vpc_id     = aws_vpc.example.id
+  cidr_block = "10.0.1.0/24"
+
+  tags = {
+    Name = "example-subnet"
+  }
+}
+
 resource "aws_instance" "example" {
   ami                    = "ami-06e46074ae430fba6"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.example.id]
+  subnet_id              = aws_subnet.example.id
   tags = {
     Name        = "Dev-056"
     Environment = "Dev"
